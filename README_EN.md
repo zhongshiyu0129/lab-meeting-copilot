@@ -91,7 +91,7 @@ OpenAI-compatible providers are supported. See [模型推荐.md](ran-backend/模
 ## Repository map
 
 ```text
-ran-notes/
+lab-meeting-copilot/
 ├── ran-page 3/             # Product landing page and interactive demo
 ├── ran-backend/
 │   ├── main.py             # FastAPI, parsing, LLM orchestration, library APIs
@@ -124,4 +124,4 @@ Released under the [MIT License](LICENSE).
 
 ## Contact
 
-Built by [@maxwell-sw](https://github.com/maxwell-sw). Issues and pull requests are welcome.
+Built by [@zhongshiyu0129](https://github.com/zhongshiyu0129). Issues and pull requests are welcome.

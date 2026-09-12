@@ -104,7 +104,7 @@ OPENAI_MODEL=gpt-4o
 ## Repository map
 
 ```text
-ran-notes/
+lab-meeting-copilot/
 ├── ran-page 3/             # 产品主页与交互式 Demo
 ├── ran-backend/
 │   ├── main.py             # FastAPI、材料解析、LLM 编排、资料库接口
@@ -137,4 +137,4 @@ Released under the [MIT License](LICENSE).
 
 ## Contact
 
-Built by [@maxwell-sw](https://github.com/maxwell-sw). Issues and pull requests are welcome.
+Built by [@zhongshiyu0129](https://github.com/zhongshiyu0129). Issues and pull requests are welcome.
