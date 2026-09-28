@@ -8,7 +8,7 @@
   <p><strong>一场组会结束了，真正重要的研究工作才刚刚开始。</strong></p>
   <p>研行记把语音转写、PPT、PDF 与现场讨论整理成一份有出处、能复盘、可继续推进的研究行动记录。</p>
 
-  <a href="https://ran-notes.onrender.com/app/demo.html"><img src="https://img.shields.io/badge/立即体验-在线_Demo-2563EB?style=for-the-badge" alt="立即体验在线 Demo" /></a>
+  <a href="https://yanxingji-ran.onrender.com/app/demo.html"><img src="https://img.shields.io/badge/立即体验-在线_Demo-2563EB?style=for-the-badge" alt="立即体验在线 Demo" /></a>
   <a href="https://github.com/zhongshiyu0129/lab-meeting-copilot"><img src="https://img.shields.io/badge/GitHub-查看源码-111827?style=for-the-badge&logo=github" alt="查看 GitHub 源码" /></a>
 
   <br /><br />
@@ -23,7 +23,7 @@
 
 ## 先体验，再读文档
 
-打开 **[研行记公开体验版](https://ran-notes.onrender.com/app/demo.html)**，点击右上角「加载官方试用案例」，即可用内置的“猪周期”组会材料走完一遍真实流程：
+打开 **[研行记公开体验版](https://yanxingji-ran.onrender.com/app/demo.html)**，点击右上角「加载官方试用案例」，即可用内置的“猪周期”组会材料走完一遍真实流程：
 
 1. 载入语音转写、研究汇报 PPT 和参考文献 PDF；
 2. 核对汇报人与材料归属；

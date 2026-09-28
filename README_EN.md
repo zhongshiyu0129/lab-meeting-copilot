@@ -8,7 +8,7 @@
   <p><strong>A research meeting ends. The work that matters is only beginning.</strong></p>
   <p>RAN turns transcripts, slides, papers, and discussion into research notes that are traceable, reviewable, and ready to move forward.</p>
 
-  <a href="https://ran-notes.onrender.com/app/demo.html"><img src="https://img.shields.io/badge/Try_it-Live_Demo-2563EB?style=for-the-badge" alt="Try the live demo" /></a>
+  <a href="https://yanxingji-ran.onrender.com/app/demo.html"><img src="https://img.shields.io/badge/Try_it-Live_Demo-2563EB?style=for-the-badge" alt="Try the live demo" /></a>
   <a href="https://github.com/zhongshiyu0129/lab-meeting-copilot"><img src="https://img.shields.io/badge/GitHub-Source-111827?style=for-the-badge&logo=github" alt="View source on GitHub" /></a>
 
   <br /><br />
@@ -23,7 +23,7 @@
 
 ## Try it before reading the docs
 
-Open the **[public RAN demo](https://ran-notes.onrender.com/app/demo.html)** and select “加载官方试用案例” to run the bundled Pig Cycle research meeting from end to end:
+Open the **[public RAN demo](https://yanxingji-ran.onrender.com/app/demo.html)** and select “加载官方试用案例” to run the bundled Pig Cycle research meeting from end to end:
 
 1. Load a transcript, research slide deck, and reference paper.
 2. Confirm speakers and material ownership.
