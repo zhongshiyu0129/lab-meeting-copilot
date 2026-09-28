@@ -2242,7 +2242,14 @@
             const manifestResponse = await fetch(`${API_BASE_URL}/trial-case`);
             if (!manifestResponse.ok) throw new Error('试用案例配置读取失败，请确认后端已更新并启动。');
             const trial = await manifestResponse.json();
-            const loaded = await Promise.all((trial.materials || []).map(async asset => ({ asset, file: await fetchTrialFile(asset) })));
+            // Render 免费实例对多个大文件的并发流式响应容易排队。逐份读取更稳定，
+            // 也能让用户明确看到当前进度，而不是长时间停在同一句提示上。
+            const trialMaterials = trial.materials || [];
+            const loaded = [];
+            for (const [index, asset] of trialMaterials.entries()) {
+                if (trialStatus) trialStatus.textContent = `正在读取试用材料 ${index + 1}/${trialMaterials.length}：${asset.filename}`;
+                loaded.push({ asset, file: await fetchTrialFile(asset) });
+            }
             const transcript = loaded.find(item => item.asset.role === 'transcript');
             const materials = loaded.filter(item => item.asset.role === 'material').map(item => item.file);
 
