@@ -117,7 +117,9 @@ VISION_MAX_IMAGES=18
 
 部署后的 `/health` 会返回 `model_configured: true/false`，便于确认服务端是否读到密钥，但不会返回密钥本身。
 
-真实 API Key 只应出现在本机 `ran-backend/.env` 或部署平台的 Secret/Environment 面板中。本仓库通过 `.gitignore` 与 `.dockerignore` 双重排除 `.env`；前端代码、Git 历史和浏览器网络响应都不包含密钥。公开演示会消耗维护者的模型额度，建议同时在模型服务商后台设置消费上限与告警。
+真实 API Key 只应出现在本机 `ran-backend/.env` 或部署平台的 Secret/Environment 面板中。本仓库通过 `.gitignore` 与 `.dockerignore` 双重排除 `.env`，由后端调用模型，浏览器无需获取密钥。提交前仍应检查暂存区，避免误把密钥写进代码或文档。公开演示会消耗维护者的模型额度，建议在服务商后台设置消费上限与告警；额度耗尽时，页面仍可访问，但模型生成将暂停。
+
+当前演示通过 Render 的公共仓库方式部署；推送 GitHub 后，还需在控制台选择 **Manual Deploy → Deploy latest commit**。若希望自动部署，可另行配置 GitHub 集成。
 
 ## 项目结构
 
@@ -138,6 +140,7 @@ lab-meeting-copilot/
 
 - API Key 仅由后端读取；`.env`、生成记录数据库与上传文件均已从 Git/Docker 构建上下文排除。
 - 当前公开版是产品演示，不是带账号隔离的多用户系统；请勿在公开站点处理敏感材料。
+- 免费部署未配置持久磁盘，重启或重新部署后资料库可能重置；重要记录请及时导出。
 - AI 结果用于辅助梳理和推进研究，不能替代研究者对实验、数据、引用和结论的最终核验。
 - 内置案例仅用于产品体验；处理自有材料前，请确认拥有相应的使用与分享权限。
 

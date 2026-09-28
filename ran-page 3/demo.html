@@ -2226,10 +2226,24 @@
         return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
     }
 
+    async function fetchTrialResource(path, responseType, label) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 120000);
+        try {
+            const response = await fetch(`${API_BASE_URL}${path}`, { signal: controller.signal });
+            if (!response.ok) throw new Error(`${label}读取失败（HTTP ${response.status}），请稍后重试。`);
+            // Keep the deadline active while reading the body, not just headers.
+            return await response[responseType]();
+        } catch (error) {
+            if (error.name === 'AbortError') throw new Error(`${label}读取超时。免费服务可能正在唤醒，请稍后重新点击“加载官方试用案例”。`);
+            throw error;
+        } finally {
+            clearTimeout(timer);
+        }
+    }
+
     async function fetchTrialFile(asset) {
-        const response = await fetch(`${API_BASE_URL}/trial-case/assets/${encodeURIComponent(asset.id)}`);
-        if (!response.ok) throw new Error(`未能加载「${asset.filename}」`);
-        const blob = await response.blob();
+        const blob = await fetchTrialResource(`/trial-case/assets/${encodeURIComponent(asset.id)}`, 'blob', `「${asset.filename}」`);
         return new File([blob], asset.filename, { type: blob.type || 'application/octet-stream' });
     }
 
@@ -2239,11 +2253,8 @@
         loadTrialBtn.textContent = '正在加载试用材料…';
         if (trialStatus) { trialStatus.style.display = 'block'; trialStatus.textContent = '正在从应用内置案例读取 PPT、PDF 和已转写的组会语音…'; }
         try {
-            const manifestResponse = await fetch(`${API_BASE_URL}/trial-case`);
-            if (!manifestResponse.ok) throw new Error('试用案例配置读取失败，请确认后端已更新并启动。');
-            const trial = await manifestResponse.json();
-            // Render 免费实例对多个大文件的并发流式响应容易排队。逐份读取更稳定，
-            // 也能让用户明确看到当前进度，而不是长时间停在同一句提示上。
+            const trial = await fetchTrialResource('/trial-case', 'json', '试用案例配置');
+            // Load one file at a time and show which file is being transferred.
             const trialMaterials = trial.materials || [];
             const loaded = [];
             for (const [index, asset] of trialMaterials.entries()) {

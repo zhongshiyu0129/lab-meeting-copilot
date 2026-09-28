@@ -117,7 +117,9 @@ The root [Dockerfile](Dockerfile) can be deployed directly to Render or another 
 
 The deployed `/health` endpoint reports whether a model is configured without returning credentials.
 
-Real keys belong only in local `ran-backend/.env` or the hosting provider's secret manager. `.gitignore` and `.dockerignore` both exclude `.env`; the frontend, Git history, and browser responses never contain the key. A public demo spends the maintainer's model allowance, so configure provider-side budget caps and alerts as well.
+Real keys belong only in local `ran-backend/.env` or the hosting provider's secret manager. `.gitignore` and `.dockerignore` exclude `.env`, and model requests run on the backend without giving the key to the browser. Review staged changes before committing to avoid accidentally embedding credentials in code or documentation. Set provider-side budget caps and alerts: when the demo allowance runs out, the page remains available but generation pauses.
+
+The current demo is deployed from a public repository on Render. After pushing to GitHub, select **Manual Deploy → Deploy latest commit** in the dashboard. Configure a GitHub integration separately if automatic deployment is desired.
 
 ## Repository map
 
@@ -138,6 +140,7 @@ lab-meeting-copilot/
 
 - API keys are read only by the backend. `.env`, generated databases, and uploaded files are excluded from Git and Docker build contexts.
 - The current public build is a product demo, not an account-isolated multi-user service. Do not process sensitive material on the public site.
+- The free deployment has no persistent disk. Restarts or redeployments may reset the library; export important notes promptly.
 - AI output assists research organization; researchers remain responsible for validating experiments, data, citations, and conclusions.
 - Bundled material is for product demonstration only. Ensure you have permission before processing or sharing your own files.
 
