@@ -1,0 +1,15 @@
+.git
+.github
+.env
+**/.env
+.venv
+**/.venv
+venv
+**/venv
+__pycache__
+**/__pycache__
+*.py[cod]
+.DS_Store
+ran-backend/ran_notes_assets
+ran-backend/ran_notes_library.sqlite3
+测试材料_三人组会

@@ -704,12 +704,30 @@
         }
 
         .source-highlight {
-            background: #93c5fd;
-            color: #1e3a8a;
+            background: #fde68a;
+            color: #713f12;
             border-radius: 0.25rem;
             padding: 0.15rem 0.25rem;
             font-weight: 500;
         }
+        .source-marker { border: 3px solid #f59e0b; background: rgba(250, 204, 21, .24); border-radius: 4px; box-sizing: border-box; pointer-events: none; }
+        .source-marker[data-page-fallback="true"] { border: 0; background: rgba(250, 204, 21, .07); box-shadow: inset 0 0 0 5px #f59e0b; }
+        .source-modal-layout { display:grid; grid-template-columns:150px minmax(0,1fr); gap:1rem; margin-top:1rem; min-height:0; }
+        .source-thumbnail-list { max-height:68vh; overflow:auto; display:flex; flex-direction:column; gap:.55rem; padding-right:.2rem; }
+        .source-thumbnail { border:2px solid #e2e8f0; border-radius:.5rem; background:#fff; padding:.25rem; text-align:left; cursor:pointer; color:#475569; font-size:.7rem; }
+        .source-thumbnail.is-active { border-color:#2563eb; background:#eff6ff; color:#1d4ed8; }
+        .source-thumbnail img { width:100%; display:block; border-radius:.25rem; margin-top:.2rem; }
+        .source-stage { max-height:68vh; overflow:auto; padding:.15rem; }
+        .source-stage-page { position:relative; width:100%; background:#f8fafc; border:1px solid #e2e8f0; border-radius:.6rem; overflow:hidden; }
+        .source-stage-page img { display:block; width:100%; height:auto; }
+        .source-quote { margin:.45rem 0 .65rem; padding:.45rem .6rem; border-radius:.45rem; background:#fef3c7; color:#713f12; font-size:.75rem; line-height:1.5; }
+        .workflow-steps { display:flex; flex-wrap:wrap; gap:.35rem; margin:.55rem 0 .75rem; }
+        .workflow-step { padding:.28rem .48rem; border-radius:999px; background:#f1f5f9; color:#475569; font-size:.72rem; font-weight:600; }
+        .workflow-step.active { background:#dbeafe; color:#1d4ed8; }
+        .prep-advanced { margin-top:.65rem; border-top:1px solid var(--border); padding-top:.55rem; }
+        .prep-advanced summary { color:#64748b; cursor:pointer; font-size:.75rem; font-weight:600; }
+        .prep-advanced[open] summary { margin-bottom:.55rem; }
+        @media (max-width: 720px) { .source-modal-layout { grid-template-columns:1fr; } .source-thumbnail-list { flex-direction:row; max-height:150px; } .source-thumbnail { min-width:105px; } }
         .source-block-body {
             max-height: 420px;
             overflow-y: auto;
@@ -1107,14 +1125,13 @@
         <!-- Left: Upload -->
         <aside class="sidebar-left">
     <div class="input-step-title">会前准备</div>
-    <div id="assetLead">
-        按顺序完成：① 上传并整理转写　② 核对 AI 识别的会议信息与汇报人　③ 右侧逐人绑定材料　④ 生成纪要。
-    </div>
+    <div id="assetLead">从转写到纪要，只需三步。</div>
+    <div class="workflow-steps" aria-label="操作步骤"><span class="workflow-step active">1 转写</span><span class="workflow-step">2 会议信息</span><span class="workflow-step">3 绑定材料</span></div>
     <div id="trialStatus" style="display:none;margin:.65rem 0;padding:.55rem .65rem;border-radius:.5rem;background:#eff6ff;color:#1d4ed8;font-size:.73rem;line-height:1.5;"></div>
     <div class="prep-step">
         <div class="prep-kicker">步骤 1 · 上传并整理转写稿</div>
         <label class="prep-label" for="rawTranscriptInput">原始语音转写稿</label>
-        <p class="prep-help">粘贴 ASR 原文，或导入 TXT / DOCX。保留「发言人 1」「SPEAKER_00」等原始标签即可。</p>
+        <p class="prep-help">粘贴原文或导入 TXT / DOCX；保留原始发言人标签即可。</p>
         <textarea id="rawTranscriptInput" class="prep-textarea" placeholder="例如：发言人1：我这周完成了……&#10;发言人2：这个对照组还需要补……"></textarea>
         <div style="display:flex;gap:0.45rem;margin-top:0.55rem;align-items:center;">
             <button type="button" class="btn btn-ghost" id="selectTranscriptFileBtn" style="font-size:0.75rem;padding:0.35rem 0.55rem;">导入 TXT / DOCX</button>
@@ -1123,9 +1140,6 @@
             <input id="transcriptFileInput" type="file" accept=".txt,.docx" style="display:none;">
         </div>
         <div id="transcriptSelectedFile" style="display:none;margin-top:.35rem;font-size:.71rem;color:#475569;"></div>
-        <label class="prep-label" for="speakerInstruction">发言人说明（可选）</label>
-        <textarea id="speakerInstruction" class="prep-textarea" style="min-height:72px;" placeholder="例如：发言人1是钟诗语，发言人2是导师王老师；其余暂时不确定。"></textarea>
-        <p class="prep-help">AI 只会采用你明确说明的身份；不确定的发言人会保留原标签，供你后续确认。</p>
         <div style="display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;">
             <button type="button" class="btn btn-primary" id="prepareTranscriptBtn" style="font-size:0.78rem;padding:0.42rem 0.62rem;">✨ 整理为可读转写稿</button>
             <button type="button" class="btn btn-ghost" id="cancelPrepareTranscriptBtn" style="display:none;font-size:0.78rem;padding:0.42rem 0.62rem;color:#dc2626;">停止整理</button>
@@ -1135,14 +1149,13 @@
             <div class="transcript-progress-head"><span id="transcriptProgressLabel">等待开始</span><span id="transcriptProgressValue"></span></div>
             <div class="transcript-progress-track"><div id="transcriptProgressBar" class="transcript-progress-bar"></div></div>
         </div>
-        <label style="display:flex;align-items:flex-start;gap:.42rem;margin-top:.65rem;font-size:.73rem;color:#334155;cursor:pointer;">
-            <input type="checkbox" id="skipTranscriptPreparation" style="margin-top:.14rem;">
-            <span>跳过 AI 整理，直接使用原始转写生成纪要<br><span style="color:#64748b;">适用于已人工校对的转写稿；不会自动识别发言人或补填会议信息。</span></span>
-        </label>
-        <div id="preparedTranscriptWrap">
-            <label class="prep-label" for="transcriptInput">已整理的会议转写（可编辑）</label>
-            <textarea id="transcriptInput" class="prep-textarea" placeholder="点击“整理为可读转写稿”后，结果会显示在这里。"></textarea>
-        </div>
+        <details class="prep-advanced">
+            <summary>高级选项：身份说明、人工校对转写</summary>
+            <label class="prep-label" for="speakerInstruction">发言人说明（可选）</label>
+            <textarea id="speakerInstruction" class="prep-textarea" style="min-height:72px;" placeholder="例如：发言人1是钟诗语，发言人2是导师王老师。"></textarea>
+            <label style="display:flex;align-items:flex-start;gap:.42rem;margin-top:.65rem;font-size:.73rem;color:#334155;cursor:pointer;"><input type="checkbox" id="skipTranscriptPreparation" style="margin-top:.14rem;"><span>跳过 AI 整理，直接使用原始转写</span></label>
+            <div id="preparedTranscriptWrap"><label class="prep-label" for="transcriptInput">已整理的会议转写（可编辑）</label><textarea id="transcriptInput" class="prep-textarea" placeholder="整理后的转写会显示在这里。"></textarea></div>
+        </details>
     </div>
     <div id="meetingBasicInfoSlot"></div>
 
@@ -1354,8 +1367,8 @@
             <div id="libraryAssetPreview" class="library-card" style="display:none;margin-top:1rem;"><div style="display:flex;justify-content:space-between;gap:.75rem;align-items:center;"><strong id="libraryAssetPreviewTitle" style="font-size:.85rem;"></strong><button type="button" id="closeAssetPreviewBtn" class="btn btn-ghost" style="font-size:.7rem;padding:.25rem .45rem;">收起预览</button></div><div id="libraryAssetPreviewMeta" style="font-size:.7rem;color:#64748b;margin-top:.35rem;"></div><pre id="libraryAssetPreviewText" style="white-space:pre-wrap;max-height:260px;overflow:auto;margin:.55rem 0 0;padding:.65rem;background:#f8fafc;border-radius:.45rem;font: .75rem/1.55 ui-monospace, SFMono-Regular, Menlo, monospace;"></pre></div>
         </div>
     </div>
-    <div class="library-modal" id="pptPreviewModal" role="dialog" aria-modal="true" aria-label="PPT 全页预览">
-        <div class="library-panel" style="max-width:1000px;"><div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;"><div><div id="pptPreviewModalTitle" style="font-size:1.05rem;font-weight:700;">PPT 全页预览</div><div style="font-size:.73rem;color:#64748b;margin-top:.2rem;">点击任意页可放大查看；选中的溯源页会自动定位。</div></div><button class="btn btn-ghost" id="closePptPreviewBtn">关闭</button></div><div id="pptPreviewAllSlides" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.8rem;margin-top:1rem;max-height:70vh;overflow:auto;padding:.1rem .25rem .8rem;"></div></div>
+    <div class="library-modal" id="pptPreviewModal" role="dialog" aria-modal="true" aria-label="材料完整预览">
+        <div class="library-panel" style="max-width:1180px;"><div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;"><div><div id="pptPreviewModalTitle" style="font-size:1.05rem;font-weight:700;">材料完整预览</div><div style="font-size:.73rem;color:#64748b;margin-top:.2rem;">左侧切换页面；黄色框为模型引用的可定位文字。</div></div><button class="btn btn-ghost" id="closePptPreviewBtn">关闭</button></div><div class="source-modal-layout"><div id="pptPreviewThumbnails" class="source-thumbnail-list"></div><div id="pptPreviewAllSlides" class="source-stage"></div></div></div>
     </div>
 
 <script>
@@ -1405,6 +1418,7 @@
     const closeAssetPreviewBtn = document.getElementById('closeAssetPreviewBtn');
     const pptPreviewModal = document.getElementById('pptPreviewModal');
     const pptPreviewModalTitle = document.getElementById('pptPreviewModalTitle');
+    const pptPreviewThumbnails = document.getElementById('pptPreviewThumbnails');
     const pptPreviewAllSlides = document.getElementById('pptPreviewAllSlides');
     const closePptPreviewBtn = document.getElementById('closePptPreviewBtn');
     const mentorBriefList = document.getElementById('mentorBriefList');
@@ -2978,8 +2992,10 @@
         };
         evidence.forEach(ev => {
             if (!ev || ev.type !== 'ppt') return;
+            const structuredPage = Number(ev.page || 0);
+            if (structuredPage > 0) pushPage(structuredPage);
             const loc = String(ev.location || '');
-            const m = loc.match(/PPT\s*第\s*(\d+)\s*页/);
+            const m = loc.match(/(?:PPT\s*)?第\s*(\d+)\s*页/i);
             if (m) pushPage(parseInt(m[1], 10));
         });
 
@@ -3006,19 +3022,21 @@
         const text = (pageTextMap[pageNum] || '').trim();
         const textSnippet = text ? escapeHtml(text.slice(0, 160)) + (text.length > 160 ? '...' : '') : '该页暂无可提取文本';
         const img = slide && slide.images && slide.images.length ? slide.images[0] : '';
-        const openBtn = img
-            ? `<a href="${img}" target="_blank" rel="noopener" style="font-size:0.72rem;color:#2563eb;text-decoration:none;">点击查看该页大图 ↗</a>`
-            : `<span style="font-size:0.72rem;color:#94a3b8;">未生成整页截图（可安装 LibreOffice）</span>`;
-        const imgHtml = img
-            ? `<img src="${img}" alt="PPT第${pageNum}页" style="width:100%;border-radius:0.5rem;border:1px solid #e2e8f0;margin-bottom:0.5rem;">`
-            : '';
         const sourceId = slide && slide.source_id ? String(slide.source_id) : '';
         const sourceName = slide && slide.source_name ? String(slide.source_name) : 'PPT';
+        const quoteRaw = evidence && (evidence.quote || evidence.context) ? String(evidence.quote || evidence.context) : '';
+        const quote = escapeHtml(quoteRaw);
+        const overlay = slide ? buildTraceOverlay(slide, 'ppt', quoteRaw) : '';
+        const openBtn = img && sourceId
+            ? `<button type="button" data-ppt-preview-all="${escapeHtml(sourceId)}" data-ppt-focus-page="${pageNum}" data-ppt-quote="${quote}" style="font-size:0.72rem;color:#2563eb;background:transparent;border:0;padding:0;cursor:pointer;">放大并定位 ↗</button>`
+            : `<span style="font-size:0.72rem;color:#94a3b8;">未生成整页截图</span>`;
+        const imgHtml = img
+            ? `<div style="position:relative;margin-bottom:.5rem;"><img src="${img}" alt="PPT第${pageNum}页" style="width:100%;display:block;border-radius:0.5rem;border:1px solid #e2e8f0;">${overlay}</div>`
+            : '';
         const pageCount = sourceId ? slides.filter(item => item && item.source_id === sourceId).length : 0;
         const asset = currentRecord && (currentRecord.archived_assets || []).find(item => item && item.name === sourceName && item.type === 'ppt');
         const originalUrl = asset && currentRecord && currentRecord.library_meeting_id
             ? `${API_BASE_URL}/library/assets/${encodeURIComponent(currentRecord.library_meeting_id)}/${encodeURIComponent(asset.id)}` : '';
-        const quote = evidence && evidence.quote ? escapeHtml(String(evidence.quote)) : '';
         const deckControls = sourceId ? `<div style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-top:.35rem;"><button type="button" data-ppt-preview-all="${escapeHtml(sourceId)}" data-ppt-focus-page="${pageNum}" data-ppt-quote="${quote}" style="padding:0;border:0;background:transparent;color:#2563eb;font-size:.72rem;cursor:pointer;">浏览整份 PPT（${pageCount} 页）</button>${originalUrl ? `<a href="${originalUrl}" target="_blank" rel="noopener" style="color:#047857;font-size:.72rem;text-decoration:none;">打开 PPT 原件 ↗</a>` : ''}</div>` : '';
         return `
             <div style="border:1px solid #dbeafe;border-radius:0.65rem;padding:0.6rem;margin-bottom:0.65rem;background:#f8fbff;">
@@ -3099,21 +3117,23 @@
 
     function buildPaperTraceCard(ev, raw) {
         const loc = escapeHtml(String(ev.location || '文献').trim());
-        const quote = escapeHtml(String(ev.quote || '').trim().slice(0, 280));
+        const quoteRaw = String(ev.quote || ev.context || '').trim();
+        const quote = escapeHtml(quoteRaw.slice(0, 280));
         const sourceName = escapeHtml(String(ev.source_name || '').trim());
         const sourceId = escapeHtml(String(ev.source_id || '').trim());
         const page = escapeHtml(String(ev.page || '').trim());
         const pageNumber = Number(ev.page || 0);
         const rendered = ((raw && raw.papers_pages) || []).find(item => item && item.source_id === ev.source_id && (Number(item.source_page || item.page) === pageNumber || Number(item.page) === pageNumber));
         const image = rendered && rendered.image ? rendered.image : '';
+        const overlay = rendered ? buildTraceOverlay(rendered, 'pdf', quoteRaw) : '';
         const open = sourceId
-            ? `<button type="button" data-source-id="${sourceId}" data-source-quote="${quote}" style="margin-top:0.45rem;font-size:0.7rem;color:#c2410c;background:transparent;border:0;padding:0;cursor:pointer;">打开完整文件预览 ↗</button>`
+            ? `<button type="button" data-source-id="${sourceId}" data-source-page="${pageNumber || ''}" data-source-quote="${quote}" style="margin-top:0.45rem;font-size:0.7rem;color:#c2410c;background:transparent;border:0;padding:0;cursor:pointer;">完整预览并定位 ↗</button>`
             : '';
         return `
             <div style="border:1px solid #fed7aa;border-radius:0.65rem;padding:0.6rem;margin-bottom:0.65rem;background:#fff7ed;">
                 <div style="font-size:0.82rem;font-weight:600;color:#c2410c;margin-bottom:0.4rem;">${loc}</div>
                 ${sourceName ? `<div style="font-size:0.7rem;color:#9a3412;margin-bottom:0.35rem;">${sourceName}${page ? ` · 第${page}页` : ''}</div>` : ''}
-                ${image ? `<img src="${image}" alt="${sourceName || '文献'}第${page || ''}页" style="width:100%;border-radius:.45rem;border:1px solid #fed7aa;margin-bottom:.45rem;">` : ''}
+                ${image ? `<div style="position:relative;margin-bottom:.45rem;"><img src="${image}" alt="${sourceName || '文献'}第${page || ''}页" style="width:100%;display:block;border-radius:.45rem;border:1px solid #fed7aa;">${overlay}</div>` : ''}
                 <div style="font-size:0.76rem;color:#334155;line-height:1.5;">${quote || '（无引用片段）'}</div>
                 ${open}
             </div>
@@ -3155,13 +3175,18 @@
         evidence.forEach(ev => {
             if (!ev || !ev.type) return;
             if (ev.type === 'ppt') {
+                const structuredPage = Number(ev.page || 0);
+                if (structuredPage > 0) pptPages.push(structuredPage);
                 const loc = String(ev.location || '');
-                const m = loc.match(/PPT\s*第\s*(\d+)\s*页/);
+                const m = loc.match(/(?:PPT\s*)?第\s*(\d+)\s*页/i);
                 if (m) pptPages.push(parseInt(m[1], 10));
             } else if (ev.type === 'paper' || ev.type === 'pdf' || ev.type === 'word') {
                 paperCards.push(buildPaperTraceCard(ev, raw));
             }
         });
+        const uniquePptPages = [...new Set(pptPages.filter(page => Number(page) > 0))];
+        pptPages.length = 0;
+        pptPages.push(...uniquePptPages);
         if (!pptPages.length) {
             const pages = extractPptPagesFromItem(item, raw);
             pptPages.push(...pages);
@@ -3227,30 +3252,66 @@
         }
         const button = event.target.closest('[data-source-id]');
         if (!button) return;
-        openSourcePreview(button.dataset.sourceId, button.dataset.sourceQuote || '');
+        const raw = (currentRecord && currentRecord.raw_sources) || {};
+        const pdfPages = (raw.papers_pages || []).filter(item => item && item.source_id === button.dataset.sourceId);
+        if (pdfPages.length) openPdfDocumentPreview(button.dataset.sourceId, Number(button.dataset.sourcePage || 0), button.dataset.sourceQuote || '');
+        else openSourcePreview(button.dataset.sourceId, button.dataset.sourceQuote || '');
     });
 
+    function normaliseTraceText(value) { return String(value || '').replace(/\s+/g, '').replace(/[，。；、：:（）()【】\[\]"“”'‘’]/g, '').slice(0, 160); }
+    function findTraceBox(items, quote, textKey) {
+        const target = normaliseTraceText(quote);
+        if (!target) return null;
+        const segments = String(quote || '').split(/[，。；！？!?,.：:\n]+/).map(normaliseTraceText).filter(part => part.length >= 8);
+        return (items || []).find(item => {
+            const text = normaliseTraceText(item && item[textKey]);
+            const probe = Math.min(24, target.length, text.length);
+            if (probe >= 8 && (text.includes(target.slice(0, probe)) || target.includes(text.slice(0, probe)))) return true;
+            return segments.some(segment => {
+                const size = Math.min(18, segment.length, text.length);
+                return size >= 8 && (text.includes(segment.slice(0, size)) || segment.includes(text.slice(0, size)));
+            });
+        }) || null;
+    }
+    function buildTraceOverlay(page, kind, quote) {
+        if (kind === 'ppt') {
+            const box = findTraceBox(page.text_boxes, quote, 'text');
+            if (!box || !page.slide_width || !page.slide_height) return quote ? '<div class="source-marker" data-page-fallback="true" title="引用来自本页；未匹配到精确文字框" style="position:absolute;inset:0;"></div>' : '';
+            return `<div class="source-marker" title="模型引用的文字区域" style="position:absolute;left:${(box.left / page.slide_width) * 100}%;top:${(box.top / page.slide_height) * 100}%;width:${(box.width / page.slide_width) * 100}%;height:${(box.height / page.slide_height) * 100}%;"></div>`;
+        }
+        const span = findTraceBox(page.text_spans, quote, 'text');
+        const box = span && span.bbox;
+        if (!box || !page.page_width || !page.page_height) return quote ? '<div class="source-marker" data-page-fallback="true" title="引用来自本页；旧记录未包含精确文字坐标" style="position:absolute;inset:0;"></div>' : '';
+        return `<div class="source-marker" title="模型引用的文字区域" style="position:absolute;left:${(box[0] / page.page_width) * 100}%;top:${(box[1] / page.page_height) * 100}%;width:${((box[2] - box[0]) / page.page_width) * 100}%;height:${((box[3] - box[1]) / page.page_height) * 100}%;"></div>`;
+    }
+    function openVisualDocumentPreview(pages, kind, focusPage = 0, quote = '') {
+        if (!pages.length || !pptPreviewModal || !pptPreviewAllSlides || !pptPreviewThumbnails) { alert('该材料暂无可用的页面预览。'); return; }
+        const name = pages[0].source_name || (kind === 'ppt' ? 'PPT' : 'PDF');
+        let activeIndex = Math.max(0, pages.findIndex(page => Number(page.page) === Number(focusPage) || Number(page.source_page) === Number(focusPage)));
+        if (pptPreviewModalTitle) pptPreviewModalTitle.textContent = `${name} · ${pages.length} 页`;
+        const render = () => {
+            const page = pages[activeIndex];
+            const image = kind === 'ppt' ? ((page.images || [])[0] || '') : (page.image || '');
+            const overlay = buildTraceOverlay(page, kind, quote);
+            const hasLocatedText = Boolean(overlay) && !overlay.includes('data-page-fallback');
+            const quoteText = String(quote || '').trim();
+            pptPreviewThumbnails.innerHTML = pages.map((item, index) => {
+                const thumb = kind === 'ppt' ? ((item.images || [])[0] || '') : (item.image || '');
+                return `<button type="button" class="source-thumbnail${index === activeIndex ? ' is-active' : ''}" data-preview-index="${index}">第 ${item.page} 页${thumb ? `<img src="${thumb}" alt="第${item.page}页缩略图">` : ''}</button>`;
+            }).join('');
+            pptPreviewAllSlides.innerHTML = `${quoteText ? `<div class="source-quote">${hasLocatedText ? '已用黄色框定位引用：' : '引用来自该页；黄色边框表示尚未匹配到精确文字区域：'} ${escapeHtml(quoteText.slice(0, 220))}</div>` : ''}<div class="source-stage-page">${image ? `<img src="${image}" alt="${escapeHtml(name)}第${page.page}页">` : '<div style="padding:2rem;color:#64748b;">该页尚未生成可视化预览。</div>'}${overlay}</div>`;
+            pptPreviewThumbnails.querySelectorAll('[data-preview-index]').forEach(button => button.addEventListener('click', () => { activeIndex = Number(button.dataset.previewIndex); render(); }));
+        };
+        render();
+        pptPreviewModal.classList.add('open');
+    }
     function openPptDeckPreview(sourceId, focusPage = 0, quote = '') {
         const raw = (currentRecord && currentRecord.raw_sources) || {};
-        const slides = (raw.ppt_slides || []).filter(item => item && item.source_id === sourceId);
-        if (!slides.length || !pptPreviewModal || !pptPreviewAllSlides) { alert('该 PPT 暂无完整页预览。'); return; }
-        const name = slides[0].source_name || 'PPT';
-        if (pptPreviewModalTitle) pptPreviewModalTitle.textContent = `${name} · ${slides.length} 页`;
-        const normalise = value => String(value || '').replace(/\s+/g, '').slice(0, 100);
-        const targetQuote = normalise(quote);
-        pptPreviewAllSlides.innerHTML = slides.map(slide => {
-            const image = slide.images && slide.images[0] ? slide.images[0] : '';
-            const focused = Number(slide.page) === focusPage;
-            const matchedBox = (slide.text_boxes || []).find(box => {
-                const text = normalise(box.text);
-                return targetQuote && text && (text.includes(targetQuote.slice(0, 24)) || targetQuote.includes(text.slice(0, 24)));
-            });
-            const overlay = matchedBox && slide.slide_width && slide.slide_height ? `<div title="模型引用的文字区域" style="position:absolute;left:${(matchedBox.left / slide.slide_width) * 100}%;top:${(matchedBox.top / slide.slide_height) * 100}%;width:${(matchedBox.width / slide.slide_width) * 100}%;height:${(matchedBox.height / slide.slide_height) * 100}%;box-sizing:border-box;border:3px solid #f59e0b;background:rgba(250,204,21,.18);border-radius:3px;pointer-events:none;"></div>` : '';
-            return `<div data-ppt-slide-page="${slide.page}" style="padding:.45rem;border:2px solid ${focused ? '#2563eb' : '#e2e8f0'};border-radius:.6rem;background:#fff;"><div style="font-size:.72rem;color:#475569;margin-bottom:.3rem;font-weight:600;">第 ${slide.page} 页${focused ? ' · 当前溯源' : ''}${matchedBox ? ' · 已定位引用文字' : ''}</div><div style="position:relative;">${image ? `<a href="${image}" target="_blank" rel="noopener"><img src="${image}" alt="PPT第${slide.page}页" style="width:100%;display:block;border-radius:.3rem;"></a>` : '<div style="color:#94a3b8;font-size:.75rem;">该页预览尚未生成</div>'}${overlay}</div></div>`;
-        }).join('');
-        pptPreviewModal.classList.add('open');
-        const focusedSlide = pptPreviewAllSlides.querySelector(`[data-ppt-slide-page="${focusPage}"]`);
-        if (focusedSlide) setTimeout(() => focusedSlide.scrollIntoView({ block: 'center', behavior: 'smooth' }), 0);
+        openVisualDocumentPreview((raw.ppt_slides || []).filter(item => item && item.source_id === sourceId), 'ppt', focusPage, quote);
+    }
+    function openPdfDocumentPreview(sourceId, focusPage = 0, quote = '') {
+        const raw = (currentRecord && currentRecord.raw_sources) || {};
+        openVisualDocumentPreview((raw.papers_pages || []).filter(item => item && item.source_id === sourceId), 'pdf', focusPage, quote);
     }
     if (closePptPreviewBtn) closePptPreviewBtn.addEventListener('click', () => pptPreviewModal.classList.remove('open'));
 

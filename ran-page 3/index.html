@@ -472,13 +472,11 @@
                 研行记 <span class="logo-sub">Research Action Note</span>
             </div>
             <div class="nav-links hidden md:flex">
-                <a href="#value">价值主张</a>
-                <a href="#painpoints">痛点分析</a>
-                <a href="#logic">产品逻辑</a>
-                <a href="#features">核心功能</a>
-                <a href="#comparison">竞品分析</a>
-                <a href="#interaction">交互设计</a>
-                <a href="#tech">技术方案</a>
+                <a href="#value">产品价值</a>
+                <a href="#logic">使用流程</a>
+                <a href="#features">已实现能力</a>
+                <a href="#interaction">交互预览</a>
+                <a href="#tech">实现方式</a>
                 <a href="#qa">质量保障</a>
             </div>
             <div class="hidden md:flex">
@@ -491,20 +489,20 @@
     <header>
         <div class="container text-center">
             <div class="badge">
-                基于多模态大模型的科研组会记录生成与管理工具
+                可运行演示版 · 支持转写、PPT、PDF 与页面级溯源
             </div>
             <h1>
                 “研”之有据，记之有值
             </h1>
             <p class="subtitle">
-                一键生成<span class="gradient-text">高价值</span>科研组会记录
+                把组会材料变成<span class="gradient-text">可追溯、可执行</span>的研究记录
             </p>
             <p class="hero-desc">
-                打破语音记录孤立性，将讨论要点、导师反馈、行动项与文献段落、PPT 数据图表精准关联，让科研反馈“有据可查、可被复盘、可被执行”。
+                整合语音转写、PPT 与 PDF 文献，生成按汇报人组织的讨论要点、导师反馈和行动项；点击纪要即可回到对应页面，并高亮相关证据。
             </p>
             <div class="flex justify-center gap-4">
-                <a href="#value" class="btn btn-primary btn-lg">了解更多</a>
-                <button class="btn btn-outline btn-lg js-open-modal">查看演示</button>
+                <a href="#features" class="btn btn-primary btn-lg">查看已实现能力</a>
+                <button class="btn btn-outline btn-lg js-open-modal">体验官方案例</button>
             </div>
         </div>
     </header>
@@ -513,23 +511,23 @@
     <section id="value" class="bg-white">
         <div class="container">
             <h2>核心价值主张</h2>
-            <p class="section-desc">摒弃传统“口语复述”，打造“文-图-献”三位一体的科研资产管理引擎</p>
+            <p class="section-desc">从一次性会议纪要，升级为有证据、有负责人、有后续状态的研究资产</p>
             
             <div class="grid md:grid-cols-3 gap-8">
                 <div class="card">
                     <div class="icon-box icon-blue">🔗</div>
-                    <h3>全语境行动引擎</h3>
-                    <p>打破语音记录孤立性，点击记录即可一键溯源至PPT图表与文献段落，完整还原讨论语境。</p>
+                    <h3>页面级证据溯源</h3>
+                    <p>点击讨论要点即可查看对应转写原文、PPT 或 PDF 页面；可定位的引用内容会以黄色框清晰标出。</p>
                 </div>
                 <div class="card">
                     <div class="icon-box icon-teal">✨</div>
                     <h3>高价值记录生成</h3>
-                    <p>AI自动提纯口语冗余，强化逻辑，关联文献支撑，生成具学术性与指导性的结构化记录。</p>
+                    <p>AI 整理转写、识别汇报人，生成讨论要点、导师反馈、风险与分级行动项，并保留证据引用。</p>
                 </div>
                 <div class="card">
                     <div class="icon-box icon-indigo">🧠</div>
-                    <h3>科研轨迹资产化</h3>
-                    <p>将“写完就死”的纪要转化为可检索、可迁移的团队知识图谱，支撑科研复盘与传承。</p>
+                    <h3>跨组会持续推进</h3>
+                    <p>通过本地资料库、行动项状态、导师关注点和学生进展视图，持续追踪研究推进过程。</p>
                 </div>
             </div>
         </div>
@@ -595,24 +593,24 @@
     <section id="logic" class="bg-white">
         <div class="container">
             <h2>核心产品逻辑</h2>
-            <p class="section-desc">素材导入 → AI整合提纯 → 关联溯源 → <span style="color: #2563eb; font-weight: bold;">生成记录</span> → 资产沉淀</p>
+            <p class="section-desc">导入材料 → 核对转写与汇报人 → <span style="color: #2563eb; font-weight: bold;">生成结构化纪要</span> → 页面级溯源 → 行动项持续跟进</p>
             
             <!-- Logic Steps Flow -->
             <div class="grid md:grid-cols-5 gap-4 mb-12">
                 <div class="step-card">
                     <div class="step-icon">📂</div>
                     <h4>1. 素材导入</h4>
-                    <p style="font-size: 0.75rem;">语音/PPT/文献<br>多模态解析</p>
+                    <p style="font-size: 0.75rem;">转写/PPT/PDF<br>统一导入</p>
                 </div>
                 <div class="step-card">
                     <div class="step-icon">🤖</div>
-                    <h4>2. AI整合提纯</h4>
-                    <p style="font-size: 0.75rem;">去口语化<br>逻辑重组</p>
+                    <h4>2. 核对与绑定</h4>
+                    <p style="font-size: 0.75rem;">整理转写<br>材料归属汇报人</p>
                 </div>
                 <div class="step-card">
                     <div class="step-icon">🔗</div>
-                    <h4>3. 关联溯源</h4>
-                    <p style="font-size: 0.75rem;">图文/时间戳<br>双向链接</p>
+                    <h4>3. 多模态分析</h4>
+                    <p style="font-size: 0.75rem;">文字与页面图<br>联合理解</p>
                 </div>
                 <div class="step-card" style="border: 2px solid #2563eb; background: #eff6ff;">
                     <div class="step-icon" style="background: white; color: #2563eb;">📝</div>
@@ -621,8 +619,8 @@
                 </div>
                 <div class="step-card">
                     <div class="step-icon">💾</div>
-                    <h4>5. 资产沉淀</h4>
-                    <p style="font-size: 0.75rem;">知识图谱<br>科研复盘</p>
+                    <h4>5. 溯源与跟进</h4>
+                    <p style="font-size: 0.75rem;">页面高亮<br>资料库与行动项</p>
                 </div>
             </div>
 
@@ -801,27 +799,28 @@
     <!-- Features -->
     <section id="features" class="bg-light">
         <div class="container">
-            <h2>核心功能规划</h2>
+            <h2>当前已实现能力</h2>
+            <p class="section-desc">下列能力均可在官方“猪周期”案例中直接体验</p>
             
             <!-- P0 -->
             <div class="feature-box p0-border">
                 <div class="feature-content">
                     <h3 class="flex items-center gap-2">
-                        <span style="background:#dbeafe; color:#1d4ed8; padding:0.25rem 0.75rem; border-radius:99px; font-size:0.875rem;">P0 MVP核心闭环</span>
-                        第一阶段交付
+                        <span style="background:#dbeafe; color:#1d4ed8; padding:0.25rem 0.75rem; border-radius:99px; font-size:0.875rem;">核心工作流</span>
+                        从材料到可复核纪要
                     </h3>
                     <div class="grid md:grid-cols-3 gap-6 mt-6">
                         <div style="background: #f8fafc; padding: 1rem; border-radius: 0.5rem;">
                             <h4 style="color:#1e40af; margin-bottom:0.5rem;">基础录入与导入</h4>
-                            <p style="font-size:0.875rem;">组会信息录入，语音文本、PPT、PDF文献一键导入预处理。</p>
+                            <p style="font-size:0.875rem;">组会信息、转写文本、PPT、PDF 与 Word 材料统一导入和预处理。</p>
                         </div>
                         <div style="background: #f8fafc; padding: 1rem; border-radius: 0.5rem;">
                             <h4 style="color:#1e40af; margin-bottom:0.5rem;">AI智能生成</h4>
-                            <p style="font-size:0.875rem;">口语提纯、术语规范、导师反馈分级（🔴 必须/🟡 建议/🟢 探索）。</p>
+                            <p style="font-size:0.875rem;">按汇报人生成要点、导师反馈和行动项，并区分必须、建议与探索。</p>
                         </div>
                         <div style="background: #f8fafc; padding: 1rem; border-radius: 0.5rem;">
                             <h4 style="color:#1e40af; margin-bottom:0.5rem;">双向溯源</h4>
-                            <p style="font-size:0.875rem;">点击记录一键跳转对应PPT关键帧与文献段落。</p>
+                            <p style="font-size:0.875rem;">点击记录查看真实 PPT/PDF 页面，并以黄色框标出相关引用区域。</p>
                         </div>
                     </div>
                 </div>
@@ -832,8 +831,8 @@
                 <div class="feature-box p1-border">
                     <div class="feature-content">
                         <h3 class="flex items-center gap-2">
-                            <span style="background:#ccfbf1; color:#0f766e; padding:0.25rem 0.75rem; border-radius:99px; font-size:0.875rem;">P1 体验迭代</span>
-                            第二阶段
+                            <span style="background:#ccfbf1; color:#0f766e; padding:0.25rem 0.75rem; border-radius:99px; font-size:0.875rem;">跟进与沉淀</span>
+                            跨组会管理
                         </h3>
                         <ul class="feature-list mt-6">
                             <li><div><strong>文献引用规范：</strong>自动标注引用角标</div></li>
@@ -847,8 +846,8 @@
                 <div class="feature-box p2-border">
                     <div class="feature-content">
                         <h3 class="flex items-center gap-2">
-                            <span style="background:#e0e7ff; color:#4338ca; padding:0.25rem 0.75rem; border-radius:99px; font-size:0.875rem;">P2 体验增强</span>
-                            第三阶段
+                            <span style="background:#e0e7ff; color:#4338ca; padding:0.25rem 0.75rem; border-radius:99px; font-size:0.875rem;">研究辅助</span>
+                            面向复盘与启发
                         </h3>
                         <ul class="feature-list mt-6">
                             <li><div><strong>组会资产看板：</strong>日历热力图、全局搜索</div></li>
@@ -933,7 +932,7 @@
                             <td>❌</td>
                             <td>❌</td>
                             <td>❌</td>
-                            <td class="highlight-cell">✅ 自动带出历史未完成项</td>
+                            <td class="highlight-cell">✅ 资料库集中查看历史未完成项</td>
                         </tr>
                         <tr>
                             <td><strong>科研资产沉淀能力</strong></td>
@@ -1084,7 +1083,7 @@
                 <div class="text-center">
                     <div class="icon-box icon-teal" style="margin: 0 auto 1rem;">🔗</div>
                     <h3>多模态溯源</h3>
-                    <p>点击记录中的引用链接，右侧自动跳转至对应的PPT页面、文献段落或音频进度。</p>
+                    <p>点击纪要中的要点或反馈，右侧自动显示对应转写原文、PPT 页面或 PDF 页面，并定位引用区域。</p>
                 </div>
                 <div class="text-center">
                     <div class="icon-box icon-indigo" style="margin: 0 auto 1rem;">📑</div>
@@ -1098,21 +1097,21 @@
     <!-- Tech Scheme (Updated) -->
     <section id="tech" class="tech-section">
         <div class="container">
-            <h2>技术实现方案</h2>
-            <p class="section-desc" style="color: #94a3b8;">基于前沿大模型技术栈，构建安全、高效、可扩展的科研助理</p>
+            <h2>当前实现方式</h2>
+            <p class="section-desc" style="color: #94a3b8;">本地优先、OpenAI 兼容模型接口、可检查的多模态处理链路</p>
             
             <div class="grid md:grid-cols-2 gap-8 mb-12">
                 <!-- 7.1 Tools & Strategy -->
                 <div class="tech-card">
-                    <h3 style="border-bottom: 1px solid #334155; padding-bottom: 0.5rem; margin-bottom: 1rem;">7.1 工具选择与“零库存”策略</h3>
+                    <h3 style="border-bottom: 1px solid #334155; padding-bottom: 0.5rem; margin-bottom: 1rem;">7.1 本地应用与材料处理</h3>
                     <ul style="color: #cbd5e1; list-style: none;">
                         <li style="margin-bottom: 1rem;">
-                            <strong style="color: white;">● 前端 (Trae/Bolt.new)：</strong>
-                            重点构建“单次组会极致体验”的界面，如多窗格联动和行动项生成。
+                            <strong style="color: white;">● Web 前端 + FastAPI：</strong>
+                            统一承载材料上传、生成进度、纪要编辑、证据预览和资料库操作。
                         </li>
                         <li style="margin-bottom: 1rem;">
-                            <strong style="color: white;">● 后端逻辑：</strong>
-                            在没有庞大向量库时，重点优化<strong style="color: #38bdf8;">“上下文理解”</strong>，即如何让 AI 在极短的 1-2 个回放样本中快速“学会”该课题组的学术调性。
+                            <strong style="color: white;">● 本地存储：</strong>
+                            组会记录、行动项和归档材料保存在本地 SQLite 与文件目录中；模型 Key 不进入仓库。
                         </li>
                     </ul>
                 </div>
@@ -1138,19 +1137,19 @@
 
             <!-- 7.3 MVP Schedule -->
             <div class="tech-card" style="margin-bottom: 2rem;">
-                <h3 style="border-bottom: 1px solid #334155; padding-bottom: 0.5rem; margin-bottom: 1rem;">7.3 MVP 落地周期计划</h3>
+                <h3 style="border-bottom: 1px solid #334155; padding-bottom: 0.5rem; margin-bottom: 1rem;">7.3 当前版本状态</h3>
                 <div class="grid md:grid-cols-3 gap-6">
                     <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 0.5rem;">
-                        <h4 style="color: #38bdf8; margin-bottom: 0.5rem;">第 1 周｜素材解析与记录生成验证</h4>
-                        <p style="font-size: 0.875rem; color: #cbd5e1;">完成语音转文字、PPT、文献 PDF 的导入与预处理，验证 AI 对口语冗余内容的提纯能力，生成结构化科研组会记录初稿。</p>
+                        <h4 style="color: #38bdf8; margin-bottom: 0.5rem;">已实现｜素材解析与记录生成</h4>
+                        <p style="font-size: 0.875rem; color: #cbd5e1;">支持转写文本、PPT、PDF 与 Word，生成按汇报人组织的结构化组会记录。</p>
                     </div>
                     <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 0.5rem;">
-                        <h4 style="color: #38bdf8; margin-bottom: 0.5rem;">第 2 周｜行动项识别与证据级溯源</h4>
-                        <p style="font-size: 0.875rem; color: #cbd5e1;">实现导师反馈识别与行动项拆解（必须 / 建议 / 探索），建立记录与 PPT 页码、文献页码的证据级关联，完成核心三栏式界面。</p>
+                        <h4 style="color: #38bdf8; margin-bottom: 0.5rem;">已实现｜页面级证据溯源</h4>
+                        <p style="font-size: 0.875rem; color: #cbd5e1;">关联转写、PPT 与 PDF 页码，完整预览页面并高亮可定位的引用文字区域。</p>
                     </div>
                     <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 0.5rem;">
-                        <h4 style="color: #38bdf8; margin-bottom: 0.5rem;">第 3 周｜跨组会闭环与可用性验证</h4>
-                        <p style="font-size: 0.875rem; color: #cbd5e1;">模拟第二次组会输入，自动承接上次未完成行动项，支持记录编辑与导出，验证产品在连续科研推进中的可用性。</p>
+                        <h4 style="color: #38bdf8; margin-bottom: 0.5rem;">已实现｜编辑、导出与资料库</h4>
+                        <p style="font-size: 0.875rem; color: #cbd5e1;">支持纪要编辑、PDF/Word 导出、材料归档、搜索，以及跨组会行动项状态跟进。</p>
                     </div>
                 </div>
             </div>
@@ -1160,30 +1159,30 @@
     <!-- QA System -->
     <section id="qa" class="bg-white">
         <div class="container">
-            <h2>质量保障体系</h2>
-            <p class="section-desc">全链路监控与迭代，确保科研数据的准确性与安全性</p>
+            <h2>质量保障原则</h2>
+            <p class="section-desc">以证据可检查、结果可编辑、失败可理解为当前版本的质量底线</p>
 
             <div class="grid md:grid-cols-2 gap-8">
                 <!-- 8.1 KPIs -->
                 <div class="feature-box" style="border-top: 4px solid #10b981;">
                     <div class="feature-content">
-                        <h3 style="margin-bottom: 1.5rem; color: #059669;">8.1 质量考核指标</h3>
+                        <h3 style="margin-bottom: 1.5rem; color: #059669;">8.1 持续验证指标</h3>
                         <ul style="list-style: none;">
                             <li style="margin-bottom: 1rem;">
                                 <div style="font-weight: 700; color: #1e293b; margin-bottom: 0.25rem;">素材导入准确率</div>
-                                <p style="font-size: 0.875rem; color: #64748b;">PPT关键帧提取准确率≥90%，文献核心论点提取准确率≥85%，确保AI生成记录有充足、准确的素材支撑。</p>
+                                <p style="font-size: 0.875rem; color: #64748b;">持续检查 PPT/PDF 页面渲染、文字提取与文件归属，避免材料缺页或来源错配。</p>
                             </li>
                             <li style="margin-bottom: 1rem;">
                                 <div style="font-weight: 700; color: #1e293b; margin-bottom: 0.25rem;">AI记录生成质量</div>
-                                <p style="font-size: 0.875rem; color: #64748b;">口语冗余提纯率≥80%，学术术语规范率≥90%，导师反馈识别准确率≥85%，行动项拆解合理性≥80%。</p>
+                                <p style="font-size: 0.875rem; color: #64748b;">通过官方案例和真实组会样本复核讨论要点、导师反馈与行动项是否完整、准确。</p>
                             </li>
                             <li style="margin-bottom: 1rem;">
                                 <div style="font-weight: 700; color: #1e293b; margin-bottom: 0.25rem;">溯源准确性</div>
-                                <p style="font-size: 0.875rem; color: #64748b;">记录内容与PPT、文献的关联溯源准确率≥90%，点击关联标识可快速、准确跳转至对应素材。</p>
+                                <p style="font-size: 0.875rem; color: #64748b;">每条证据保留来源、页码或位置；无法精确定位时明确显示整页回退，不伪造高亮。</p>
                             </li>
                             <li>
                                 <div style="font-weight: 700; color: #1e293b; margin-bottom: 0.25rem;">操作流畅性</div>
-                                <p style="font-size: 0.875rem; color: #64748b;">素材导入响应时间≤3秒，AI生成记录时间（单组会素材）≤20秒，界面无明显卡顿。</p>
+                                <p style="font-size: 0.875rem; color: #64748b;">生成过程展示后端真实处理节点；长材料处理期间提供进度与明确的错误反馈。</p>
                             </li>
                         </ul>
                     </div>
@@ -1198,23 +1197,23 @@
                             <div style="font-size: 1.5rem;">✍️</div>
                             <div>
                                 <h4 style="font-size: 1rem; margin-bottom: 0.25rem;">用户手动纠错</h4>
-                                <p style="font-size: 0.875rem;">在记录预览界面，支持用户手动修改AI生成的记录内容、调整行动项优先级、修正素材关联错误，系统自动记录纠错信息用于优化。</p>
+                                <p style="font-size: 0.875rem;">生成后的纪要支持直接编辑、撤销和保存；行动项可在资料库中更新状态、期限与回应情况。</p>
                             </div>
                         </div>
 
                         <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
-                            <div style="font-size: 1.5rem;">📢</div>
+                            <div style="font-size: 1.5rem;">⚠️</div>
                             <div>
-                                <h4 style="font-size: 1rem; margin-bottom: 0.25rem;">反馈收集通道</h4>
-                                <p style="font-size: 0.875rem;">在产品界面设置简单的反馈入口，用户可快速反馈记录生成、素材导入、溯源等环节的问题，定期整理反馈迭代优化。</p>
+                                <h4 style="font-size: 1rem; margin-bottom: 0.25rem;">明确错误与回退</h4>
+                                <p style="font-size: 0.875rem;">模型鉴权、额度、文件解析或溯源定位失败时给出明确提示，并尽量保留已完成的处理结果。</p>
                             </div>
                         </div>
 
                         <div style="display: flex; gap: 1rem;">
                             <div style="font-size: 1.5rem;">🔄</div>
                             <div>
-                                <h4 style="font-size: 1rem; margin-bottom: 0.25rem;">AI模型迭代</h4>
-                                <p style="font-size: 0.875rem;">基于用户纠错记录、反馈信息，定期优化AI的提纯逻辑、关联逻辑、行动项拆解逻辑，逐步提升记录生成质量。</p>
+                                <h4 style="font-size: 1rem; margin-bottom: 0.25rem;">模型可配置</h4>
+                                <p style="font-size: 0.875rem;">通过 OpenAI 兼容接口切换模型服务；视觉页数和图像理解也可按材料规模调整。</p>
                             </div>
                         </div>
                     </div>
@@ -1238,7 +1237,7 @@
                 </div>
             </div>
             <div style="font-size: 0.75rem;">
-                &copy; 2024 Research Action Note. All rights reserved.
+                &copy; 2026 Research Action Note. All rights reserved.
             </div>
         </div>
     </footer>
@@ -1251,12 +1250,12 @@
                 <div style="width: 4rem; height: 4rem; background: #eff6ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem;">
                     🚀
                 </div>
-                <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: var(--text-main);">感谢您的关注！</h3>
+                <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: var(--text-main);">体验完整工作流</h3>
                 <p style="color: var(--text-sub); margin-bottom: 1.5rem;">
-                    “研行记”目前正处于紧锣密鼓的内测开发阶段。<br>
-                    您可以点击下方按钮体验交互演示 Demo。
+                    载入内置“猪周期”案例，即可体验材料导入、AI 生成、页面级溯源与行动项归档。<br>
+                    使用自己的材料时，可在本地配置 OpenAI 兼容模型服务。
                 </p>
-                <a href="demo.html" class="btn btn-primary">进入演示系统</a>
+                <a href="demo.html" class="btn btn-primary">进入研行记 Demo</a>
             </div>
         </div>
     </div>

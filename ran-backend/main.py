@@ -40,13 +40,24 @@ TRANSCRIPT_CHUNK_CHARS = int(os.getenv("TRANSCRIPT_CHUNK_CHARS", "6000"))
 # while avoiding a burst of every chunk against the provider at once.
 TRANSCRIPT_MAX_CONCURRENCY = max(1, int(os.getenv("TRANSCRIPT_MAX_CONCURRENCY", "2")))
 VISION_INPUT_ENABLED = os.getenv("VISION_INPUT_ENABLED", "true").strip().lower() not in {"0", "false", "no"}
-VISION_MAX_IMAGES = max(0, int(os.getenv("VISION_MAX_IMAGES", "12")))
+# Scientific figures often need their caption and a neighbouring control panel
+# to be understood together. Keep this configurable, while raising the local
+# default above the old 12-page ceiling.
+VISION_MAX_IMAGES = max(0, int(os.getenv("VISION_MAX_IMAGES", "18")))
 
-client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY"),
-    base_url=os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1"),
-    timeout=MODEL_TIMEOUT_SECONDS,
-    max_retries=1,
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "").strip()
+# Keep local browsing and the built-in trial case usable before a model provider
+# is configured. Model-dependent endpoints check this value and return a clear
+# 503 instead of preventing the whole FastAPI app from importing.
+client = (
+    OpenAI(
+        api_key=OPENAI_API_KEY,
+        base_url=os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1"),
+        timeout=MODEL_TIMEOUT_SECONDS,
+        max_retries=1,
+    )
+    if OPENAI_API_KEY
+    else None
 )
 
 # 模型选择：在 .env 中设置 OPENAI_MODEL 可覆盖默认值。推荐见 模型推荐.md
@@ -54,6 +65,14 @@ MODEL_NAME = os.getenv("OPENAI_MODEL", "gpt-4o")
 
 app = FastAPI()
 logger = logging.getLogger("ran_notes")
+
+
+def require_model_config():
+    if client is None:
+        raise HTTPException(
+            status_code=503,
+            detail="尚未配置模型服务。请在 ran-backend/.env 中填写 OPENAI_API_KEY 后重启后端。",
+        )
 
 # 静态前端文件目录：本地默认 "../ran-page 3"，Docker 中通过环境变量覆盖
 STATIC_DIR = Path(os.getenv("RAN_STATIC_DIR", "../ran-page 3")).resolve()
@@ -63,6 +82,17 @@ if STATIC_DIR.exists():
     @app.get("/")
     def root_redirect():
         return RedirectResponse(url="/app/index.html")
+
+
+@app.get("/health")
+def health():
+    """Deployment probe that confirms readiness without exposing credentials."""
+    return {
+        "status": "ok",
+        "model_configured": client is not None,
+        "model": MODEL_NAME,
+        "vision_input_enabled": VISION_INPUT_ENABLED,
+    }
 
 LIBRARY_DB = Path(__file__).with_name("ran_notes_library.sqlite3")
 LIBRARY_FILES_ROOT = Path(__file__).with_name("ran_notes_assets")
@@ -294,7 +324,7 @@ def extract_pdf_text_bytes(content: bytes) -> str:
 
 
 def extract_pdf_pages_with_images(content: bytes) -> list:
-    """按页提取 PDF：每页返回 { page, text, image }，image 为 base64 数据 URL。无 PyMuPDF 时仅返回 text。"""
+    """按页提取 PDF、页面图与可用于前端溯源框选的文字坐标。"""
     try:
         import fitz  # type: ignore  # PyMuPDF
     except ImportError:
@@ -312,6 +342,14 @@ def extract_pdf_pages_with_images(content: bytes) -> list:
         for i in range(len(doc)):
             page = doc[i]
             text = (page.get_text() or "").strip()
+            text_spans = []
+            for block in (page.get_text("dict") or {}).get("blocks", []):
+                for line in block.get("lines", []) or []:
+                    for span in line.get("spans", []) or []:
+                        value = str(span.get("text") or "").strip()
+                        bbox = span.get("bbox") or []
+                        if value and len(bbox) == 4:
+                            text_spans.append({"text": value, "bbox": [round(float(n), 2) for n in bbox]})
             pix = page.get_pixmap(dpi=144)
             png_bytes = pix.tobytes("png")
             b64 = base64.b64encode(png_bytes).decode("ascii")
@@ -319,6 +357,9 @@ def extract_pdf_pages_with_images(content: bytes) -> list:
                 "page": i + 1,
                 "text": text,
                 "image": f"data:image/png;base64,{b64}",
+                "text_spans": text_spans,
+                "page_width": round(float(page.rect.width), 2),
+                "page_height": round(float(page.rect.height), 2),
             })
         doc.close()
         return pages
@@ -565,9 +606,38 @@ def _render_ppt_with_libreoffice(content: bytes):
 
 
 def render_ppt_to_page_images(content: bytes):
-    # 先用快速页级预览保证交互即时、每页可见；Office 转换仅作为没有可用预览时的兜底。
-    previews = _render_ppt_slide_previews(content)
-    return previews if previews else _render_ppt_with_libreoffice(content)
+    # Prefer a full Office render: charts, equations, SmartArt and vector shapes
+    # then reach the vision model as they appear to the researcher. The PIL
+    # preview is retained only for machines without LibreOffice.
+    rendered = _render_ppt_with_libreoffice(content)
+    return rendered if rendered else _render_ppt_slide_previews(content)
+
+
+def _visual_priority(item: dict, kind: str) -> int:
+    """Rank likely figure-heavy pages without inspecting or discarding the image."""
+    text = " ".join(box.get("text", "") for box in item.get("text_boxes", []) if isinstance(box, dict))
+    if kind == "pdf":
+        text = str(item.get("text", ""))
+    score = 1
+    keywords = ("图", "图表", "figure", "fig.", "chart", "实验", "结果", "显著", "误差", "对照", "曲线", "回归", "模型", "机制", "显微")
+    score += sum(2 for keyword in keywords if keyword in text.lower())
+    score += min(4, len(item.get("images", []) or [])) if kind == "ppt" else 0
+    return score
+
+
+def _select_visual_inputs(ppt_slides: list, papers_pages: list, limit: int) -> list:
+    """Prioritize figure-rich pages, then return their original document order."""
+    candidates = []
+    for index, slide in enumerate(ppt_slides):
+        images = slide.get("images") if isinstance(slide, dict) else []
+        if images and images[0]:
+            candidates.append((_visual_priority(slide, "ppt"), 0, index, slide, "ppt"))
+    for index, page in enumerate(papers_pages):
+        image = page.get("image") if isinstance(page, dict) else None
+        if image:
+            candidates.append((_visual_priority(page, "pdf"), 1, index, page, "paper"))
+    selected = sorted(candidates, key=lambda item: (-item[0], item[1], item[2]))[:limit]
+    return sorted(selected, key=lambda item: (item[1], item[2]))
 
 
 def _parse_json_list(value: str) -> list:
@@ -582,6 +652,7 @@ def _parse_json_list(value: str) -> list:
 @app.post("/prepare-transcript")
 async def prepare_transcript(request: Request):
     """把原始 ASR 转写整理为可核对的会议转写，不直接生成纪要。"""
+    require_model_config()
     form = await request.form()
     raw_transcript = (form.get("raw_transcript") or "").strip()
     speaker_instruction = (form.get("speaker_instruction") or "").strip()
@@ -769,6 +840,7 @@ def _merge_chunk_results(raw_transcript: str, results: list) -> dict:
 @app.post("/prepare-transcript-stream")
 async def prepare_transcript_stream(request: Request):
     """Stream actual per-segment completion events while the model edits an ASR transcript."""
+    require_model_config()
     form = await request.form()
     raw_transcript = (form.get("raw_transcript") or "").strip()
     speaker_instruction = (form.get("speaker_instruction") or "").strip()
@@ -1158,6 +1230,7 @@ def download_trial_asset(asset_id: str):
 
 
 async def _process_meeting(request: Optional[Request] = None, progress=None, form=None):
+    require_model_config()
     async def emit(stage: str, percent: int, message: str):
         if progress is not None:
             await progress({"event": "progress", "stage": stage, "percent": percent, "message": message})
@@ -1509,26 +1582,11 @@ async def _process_meeting(request: Optional[Request] = None, progress=None, for
     # 文字提取覆盖可复制文本；页面图片补足图表、公式、扫描件和 PPT 版式信息。
     visual_inputs, visual_materials = [], []
     if VISION_INPUT_ENABLED and VISION_MAX_IMAGES:
-        for slide in ppt_slides:
-            if len(visual_inputs) >= VISION_MAX_IMAGES:
-                break
-            images = slide.get("images") if isinstance(slide, dict) else []
-            image = images[0] if isinstance(images, list) and images else None
-            if not image:
-                continue
+        for _, _, _, item, kind in _select_visual_inputs(ppt_slides, papers_pages, VISION_MAX_IMAGES):
+            image = (item.get("images") or [None])[0] if kind == "ppt" else item.get("image")
             visual_inputs.append({"type": "image_url", "image_url": {"url": image}})
             visual_materials.append({
-                "type": "ppt", "source_id": slide.get("source_id"), "source_name": slide.get("source_name"), "page": slide.get("page"),
-            })
-        for page in papers_pages:
-            if len(visual_inputs) >= VISION_MAX_IMAGES:
-                break
-            image = page.get("image") if isinstance(page, dict) else None
-            if not image:
-                continue
-            visual_inputs.append({"type": "image_url", "image_url": {"url": image}})
-            visual_materials.append({
-                "type": "paper", "source_id": page.get("source_id"), "source_name": page.get("source_name"), "page": page.get("page"),
+                "type": kind, "source_id": item.get("source_id"), "source_name": item.get("source_name"), "page": item.get("page"),
             })
     user_content["visual_materials"] = visual_materials
     await emit("indexed", 52, f"证据索引已建立：文本材料 {len(source_documents)} 份，视觉页面 {len(visual_inputs)} 页。")

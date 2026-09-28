@@ -7,11 +7,9 @@ BACKEND_DIR="$PROJECT_DIR/ran-backend"
 FRONTEND_DIR="$PROJECT_DIR/ran-page 3"
 VENV_DIR="$BACKEND_DIR/.venv"
 API_PORT=8003
-WEB_PORT=8081
 
 cleanup() {
   [ -n "${API_PID:-}" ] && kill "$API_PID" 2>/dev/null || true
-  [ -n "${WEB_PID:-}" ] && kill "$WEB_PID" 2>/dev/null || true
 }
 trap cleanup EXIT INT TERM
 
@@ -51,9 +49,9 @@ if ! curl --silent --fail "http://127.0.0.1:$API_PORT/trial-case" >/dev/null; th
 fi
 
 echo "正在打开演示页面…"
-python3 -m http.server "$WEB_PORT" --directory "$FRONTEND_DIR" >/dev/null 2>&1 &
-WEB_PID=$!
-open "http://127.0.0.1:$WEB_PORT/index.html"
+# The backend mounts the frontend at /app, so API requests and the page share
+# one origin. This is required for the built-in trial-case endpoints to work.
+open "http://127.0.0.1:$API_PORT/app/demo.html"
 
 echo "研行记已启动。关闭此终端窗口即可停止服务。"
 wait "$API_PID"

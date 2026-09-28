@@ -2,10 +2,13 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# 安装系统依赖（Pillow 需要 libjpeg 和 zlib）
+# Pillow 需要 libjpeg/zlib；LibreOffice 与中文字体用于忠实渲染 PPT 页面，
+# 让线上版的图表、公式和版式与原稿一致。
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libjpeg-dev \
     zlib1g-dev \
+    libreoffice-impress \
+    fonts-noto-cjk \
     && rm -rf /var/lib/apt/lists/*
 
 # 安装 Python 依赖

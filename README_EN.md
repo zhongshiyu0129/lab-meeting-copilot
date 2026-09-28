@@ -5,8 +5,13 @@
 
   English · [中文](README.md)
 
-  <p><strong>From multimodal meeting materials to traceable research actions.</strong></p>
-  <p>A research-meeting workflow agent that turns transcripts, slides, papers, and discussions into structured notes, reviewable evidence, and cross-meeting action loops.</p>
+  <p><strong>A research meeting ends. The work that matters is only beginning.</strong></p>
+  <p>RAN turns transcripts, slides, papers, and discussion into research notes that are traceable, reviewable, and ready to move forward.</p>
+
+  <a href="https://ran-notes.onrender.com/app/demo.html"><img src="https://img.shields.io/badge/Try_it-Live_Demo-2563EB?style=for-the-badge" alt="Try the live demo" /></a>
+  <a href="https://github.com/zhongshiyu0129/lab-meeting-copilot"><img src="https://img.shields.io/badge/GitHub-Source-111827?style=for-the-badge&logo=github" alt="View source on GitHub" /></a>
+
+  <br /><br />
 
   <img src="https://img.shields.io/badge/Python-3.9%2B-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python 3.9+" />
   <img src="https://img.shields.io/badge/FastAPI-Backend-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI" />
@@ -16,49 +21,62 @@
 
 ---
 
+## Try it before reading the docs
+
+Open the **[public RAN demo](https://ran-notes.onrender.com/app/demo.html)** and select “加载官方试用案例” to run the bundled Pig Cycle research meeting from end to end:
+
+1. Load a transcript, research slide deck, and reference paper.
+2. Confirm speakers and material ownership.
+3. Generate discussion points, advisor feedback, risks, and actions.
+4. Select a citation to return to the original PPT/PDF page and inspect the yellow evidence highlight.
+5. Save the result to the library for editing or export.
+
+The public demo uses a server-side model allowance, so visitors do not need an API key. Render's free instance may take 30–60 seconds to wake after a period of inactivity.
+
+> This is a shared demo environment. Prefer the bundled case, and do not upload confidential, unpublished, or personal data. Run RAN locally for private research material.
+
 ## Why RAN
 
-Research-meeting value is often scattered across transcripts, slide decks, papers, and informal discussion. RAN (**R**esearch **A**ction **N**ote) organizes these inputs into a reviewable workflow: identify sources, extract decisions, create action items, and carry unresolved work into the next meeting.
+The valuable part of a research meeting rarely fits into a closing summary. It lives across a figure on a slide, a paragraph in a paper, an advisor's question about one variable, and the experiment that must be repeated next week.
 
-> **Product thesis**: a meeting is not a one-off summary; it is a research asset that can be searched, tracked, and advanced.
-
-## Capabilities
-
-| From input to delivery | Capability |
-| :-- | :-- |
-| **Multimodal intake** | Handles transcripts, DOCX, PPT/PPTX, and PDF files; speech transcripts can be cleaned while retaining a human review step. |
-| **Structured meeting notes** | Produces reporter/topic-oriented summaries, advisor feedback, risks, and next actions. |
-| **Traceable evidence** | Associates important findings with imported material instead of presenting unsupported summaries. |
-| **Action-item loop** | Tracks owner, due date, priority, status, and response; items remain editable. |
-| **Cross-meeting memory** | Includes a local library, search, calendar heatmap, and open-action view. |
-| **One-click demo** | Ships with a full "Pig Cycle" research-meeting case for an end-to-end walkthrough. |
-
-## Agent workflow
+Conventional minutes compress that trail into prose that sounds plausible. RAN takes a different approach: important findings should lead back to their original evidence, and every discussion should become a concrete starting point for the next action.
 
 ```text
-PPT / PDF / DOCX / transcript
+transcript + PPT + PDF / DOCX
               ↓
-  parse, clean, and confirm inputs
+ parse, clean, and bind presenters
               ↓
- constrained LLM reasoning and output
+multimodal understanding of text and figures
               ↓
-notes · feedback · risks · actions · evidence
+discussion · feedback · risks · actions
               ↓
-local library · cross-meeting tracking · export
+ page citations · highlights · research library
 ```
 
-RAN uses an LLM inside a controlled product workflow. The model interprets and synthesizes; the application owns parsing, field constraints, file archiving, action status, and retrieval. This keeps the flexibility of natural language while making outputs reviewable, editable, and actionable.
+The model interprets; the application constrains. RAN owns the source documents, output schema, evidence pages, file previews, and action state. The result is not a disposable AI response, but a research record that can be checked, edited, and carried forward.
 
-## Quick start
+## What works today
 
-### macOS: double-click launch (recommended for demos)
+| Capability | What it does |
+| :-- | :-- |
+| **Multimodal intake** | Imports transcripts, DOCX, PPT/PPTX, and PDF while keeping a human confirmation step for presenters and material ownership. |
+| **Scientific figure reading** | Sends page images together with extracted text and prioritizes pages likely to contain charts, experiments, and model details. |
+| **Structured notes** | Produces presenter/topic-oriented discussion points, advisor feedback, risks, and next actions. |
+| **Page-level provenance** | Uses structured page numbers and marks matching regions on original PPT/PDF pages with a yellow highlight or border. |
+| **Faithful previews** | Renders PPT with LibreOffice and PDF page by page, with thumbnails, large-page views, and original-file access. |
+| **Action loop** | Stores owner, deadline, priority, status, and response in a searchable research library. |
+| **One-click official case** | Includes a full Pig Cycle meeting, so the entire workflow can be tested without preparing files. |
 
-1. Configure a model service in `ran-backend/.env`; use `ran-backend/.env.example` as a template.
-2. Double-click [启动研行记.command](启动研行记.command) in Finder.
-3. On the first run, Python dependencies are installed automatically and the browser opens when the service is ready.
-4. Select “立即试用” to load the bundled case and generate an end-to-end meeting note.
+## Run locally
 
-Keep the launch terminal open while using the app; closing it stops the local service.
+### macOS one-click launch
+
+1. Copy the template: `cp ran-backend/.env.example ran-backend/.env`.
+2. Add your model-service credentials to `ran-backend/.env`.
+3. Double-click [启动研行记.command](启动研行记.command) in Finder.
+4. The first run creates a Python environment, installs dependencies, and opens the demo.
+
+Keep the launch terminal open; closing it stops the local service.
 
 ### Manual launch
 
@@ -69,24 +87,37 @@ python3 -m venv .venv
 ./.venv/bin/python -m uvicorn main:app --host 127.0.0.1 --port 8003
 ```
 
-In a second terminal:
+Open `http://127.0.0.1:8003/app/demo.html`. FastAPI serves both the UI and API, so no separate static server is required.
 
-```bash
-cd "ran-page 3"
-python3 -m http.server 8081
-```
+## Model configuration
 
-Open `http://127.0.0.1:8081`.
-
-## Configuration
+RAN supports OpenAI-compatible APIs. The default example uses `deepseek/deepseek-v4.1-flash` through OpenRouter:
 
 ```dotenv
-OPENAI_API_KEY=your_key
-OPENAI_BASE_URL=https://api.openai.com/v1
-OPENAI_MODEL=gpt-4o
+OPENAI_API_KEY=your_openrouter_key
+OPENAI_BASE_URL=https://openrouter.ai/api/v1
+OPENAI_MODEL=deepseek/deepseek-v4.1-flash
+VISION_INPUT_ENABLED=true
+VISION_MAX_IMAGES=18
 ```
 
-OpenAI-compatible providers are supported. See [模型推荐.md](ran-backend/模型推荐.md) for model notes.
+When using another provider, update the base URL, model name, and key together. See [模型推荐.md](ran-backend/模型推荐.md) for model notes.
+
+## Deploy a public demo
+
+The root [Dockerfile](Dockerfile) can be deployed directly to Render or another container platform. Configure these variables in the platform's server-side environment/secret panel:
+
+| Variable | Example | Purpose |
+| :-- | :-- | :-- |
+| `OPENAI_API_KEY` | Set as a platform secret | Required; never commit it. |
+| `OPENAI_BASE_URL` | `https://openrouter.ai/api/v1` | OpenAI-compatible endpoint. |
+| `OPENAI_MODEL` | `deepseek/deepseek-v4.1-flash` | Current multimodal model. |
+| `VISION_INPUT_ENABLED` | `true` | Sends rendered pages to the model. |
+| `VISION_MAX_IMAGES` | `18` | Maximum visual pages per generation. |
+
+The deployed `/health` endpoint reports whether a model is configured without returning credentials.
+
+Real keys belong only in local `ran-backend/.env` or the hosting provider's secret manager. `.gitignore` and `.dockerignore` both exclude `.env`; the frontend, Git history, and browser responses never contain the key. A public demo spends the maintainer's model allowance, so configure provider-side budget caps and alerts as well.
 
 ## Repository map
 
@@ -94,29 +125,32 @@ OpenAI-compatible providers are supported. See [模型推荐.md](ran-backend/模
 lab-meeting-copilot/
 ├── ran-page 3/             # Product landing page and interactive demo
 ├── ran-backend/
-│   ├── main.py             # FastAPI, parsing, LLM orchestration, library APIs
-│   ├── trial_assets/       # Bundled demo material
+│   ├── main.py             # FastAPI, parsing, model orchestration, provenance, and library APIs
+│   ├── trial_assets/       # Bundled official demo material
 │   ├── requirements.txt    # Python dependencies
-│   └── .env.example        # Configuration template
-├── 测试材料_三人组会/        # Manual upload test package
+│   └── .env.example        # Configuration template with no real secrets
+├── 测试材料_三人组会/        # Local manual-upload test pack
+├── Dockerfile              # Public container deployment
 └── 启动研行记.command       # One-click macOS launcher
 ```
 
-## Privacy & boundaries
+## Privacy and boundaries
 
-- API keys are read only from local `.env` files and are excluded from Git.
-- Generated notes and uploaded materials stay in the local library and are excluded from Git.
-- RAN assists research organization; it does not replace human validation of experiments, data, citations, or conclusions.
-- Bundled materials are for product demonstration only. Ensure that you have permission before processing or sharing your own materials.
+- API keys are read only by the backend. `.env`, generated databases, and uploaded files are excluded from Git and Docker build contexts.
+- The current public build is a product demo, not an account-isolated multi-user service. Do not process sensitive material on the public site.
+- AI output assists research organization; researchers remain responsible for validating experiments, data, citations, and conclusions.
+- Bundled material is for product demonstration only. Ensure you have permission before processing or sharing your own files.
 
-## Roadmap
+## Next
 
 - [x] Multi-source parsing and structured notes
+- [x] Faithful PPT/PDF previews with page-level yellow provenance
+- [x] Multimodal figure understanding and visual-page prioritization
 - [x] Action-item loop and local research library
-- [x] Bundled one-click demo
-- [ ] Fine-grained citation references and evidence editing
-- [ ] Team collaboration and permissions
-- [ ] Deployable multi-user version
+- [x] One-click official case and public demo
+- [ ] Team accounts, permissions, and data isolation
+- [ ] Editable evidence boxes and manual correction
+- [ ] Cross-project research memory and collaboration
 
 ## License
 

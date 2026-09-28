@@ -5,71 +5,78 @@
 
   [English](README_EN.md) · 中文
 
-  <p><strong>从多模态组会材料，到可追溯的研究行动。</strong></p>
-  <p>一个面向科研团队的组会工作流 Agent：整合转写、PPT、文献与讨论内容，生成结构化纪要、可核查证据与跨组会行动项闭环。</p>
+  <p><strong>一场组会结束了，真正重要的研究工作才刚刚开始。</strong></p>
+  <p>研行记把语音转写、PPT、PDF 与现场讨论整理成一份有出处、能复盘、可继续推进的研究行动记录。</p>
+
+  <a href="https://ran-notes.onrender.com/app/demo.html"><img src="https://img.shields.io/badge/立即体验-在线_Demo-2563EB?style=for-the-badge" alt="立即体验在线 Demo" /></a>
+  <a href="https://github.com/zhongshiyu0129/lab-meeting-copilot"><img src="https://img.shields.io/badge/GitHub-查看源码-111827?style=for-the-badge&logo=github" alt="查看 GitHub 源码" /></a>
+
+  <br /><br />
 
   <img src="https://img.shields.io/badge/Python-3.9%2B-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python 3.9+" />
   <img src="https://img.shields.io/badge/FastAPI-Backend-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI" />
   <img src="https://img.shields.io/badge/LLM-OpenAI--compatible-5B5BD6?style=flat-square" alt="OpenAI-compatible LLM" />
   <img src="https://img.shields.io/badge/License-MIT-1f2937?style=flat-square" alt="MIT License" />
-  <a href="https://ran-notes.onrender.com"><img src="https://img.shields.io/badge/在线演示-Render-46E3B7?style=flat-square&logo=render&logoColor=white" alt="在线演示" /></a>
 </div>
 
 ---
 
-## 在线体验
+## 先体验，再读文档
 
-访问 [研行记在线演示](https://ran-notes.onrender.com)，无需安装即可体验完整工作流：
+打开 **[研行记公开体验版](https://ran-notes.onrender.com/app/demo.html)**，点击右上角「加载官方试用案例」，即可用内置的“猪周期”组会材料走完一遍真实流程：
 
-1. 点击"查看演示"，进入交互式 Demo 页面。
-2. 载入内置"猪周期"研究组会样例，体验材料载入、AI 生成与归档链路。
-3. 公共演示版使用服务端配置的模型额度；上传自己的数据时，请在 AI 设置中使用自己的 OpenAI 兼容服务 Key。
+1. 载入语音转写、研究汇报 PPT 和参考文献 PDF；
+2. 核对汇报人与材料归属；
+3. 生成核心讨论、导师反馈、风险与行动项；
+4. 点击引用编号，回到对应的 PPT/PDF 页面，查看黄色高亮的证据位置；
+5. 将结果保存到资料库，继续编辑或导出。
 
-> 免费实例在无活动时会休眠，首次访问可能需要等待 30-50 秒冷启动。
+公开体验版已经在服务端配置模型额度，访客无需填写 API Key。Render 免费实例闲置后会休眠，首次打开可能需要等待约 30–60 秒。
 
-## Why RAN
+> 公开站点是共享演示环境，请优先使用内置案例，不要上传未公开、涉密或含个人信息的研究材料。个人研究资料建议在本地运行。
 
-科研组会的价值往往沉没在语音转写、PPT、论文和零散讨论里。研行记（**R**esearch **A**ction **N**ote, RAN）将这些输入组织为一条可复核的研究工作流：明确来源、抽取讨论要点、生成待办，并将行动项带入后续组会。
+## 为什么是「研行记」
 
-> **Product thesis**：组会不是一次性的“总结文本”，而是可以被持续查询、追踪和推进的研究资产。
+组会里最有价值的内容，常常不是最后那段摘要，而是散落在不同介质中的研究脉络：PPT 上的一张实验图、论文里的一段结论、导师追问的一个变量，以及下周必须补做的验证。
 
-## What it can do
-
-| 从输入到交付 | 具体能力 |
-| :-- | :-- |
-| **多模态材料接入** | 支持转写文本、DOCX、PPT/PPTX、PDF；可整理语音转写稿并保留人工核对环节。 |
-| **结构化组会纪要** | 生成按汇报人/研究主题组织的摘要、导师反馈、风险与后续行动项。 |
-| **证据可追溯** | 将关键判断与输入材料关联，避免只给“看似合理”的无来源总结。 |
-| **行动项闭环** | 记录负责人、期限、优先级、状态与回应情况；支持后续编辑。 |
-| **跨组会研究记忆** | 提供资料库、关键词搜索、日历热力图和未完成行动项视图。 |
-| **一键演示案例** | 内置“猪周期”研究组会样例，可完整体验材料载入、生成与归档链路。 |
-
-## Agent workflow
+普通会议纪要把它们压成一段“听起来合理”的文字；研行记试着做另一件事——让每个重要判断都能沿着证据链回到原始材料，让一次讨论真正变成下一次行动的起点。
 
 ```text
-PPT / PDF / DOCX / 转写文本
+语音转写 + PPT + PDF / DOCX
               ↓
-      解析、清洗与人工确认
+      解析、整理、汇报人绑定
               ↓
-   LLM 结构化推理与受约束输出
+   多模态模型理解文字、图表与版式
               ↓
-纪要 · 导师反馈 · 风险 · 行动项 · 证据
+讨论要点 · 导师反馈 · 风险 · 行动项
               ↓
-  本地资料库 · 跨组会追踪 · 导出交付
+   页码级溯源 · 原页高亮 · 资料库沉淀
 ```
 
-RAN 将 LLM 放在受控的工作流中：模型负责理解和归纳，应用负责材料解析、字段约束、文件归档、行动项状态与资料库检索。这样既保留自然语言交互的效率，也让结果能够被回看、编辑和继续推进。
+模型负责理解，应用负责约束：输入材料、结构字段、证据页码、文件预览和行动项状态都由产品流程管理。结果不是一次性的 AI 回复，而是一份可以检查、修改和继续推进的研究记录。
 
-## Quick start
+## 当前已实现
 
-### macOS：双击启动（推荐演示方式）
+| 能力 | 现在可以做什么 |
+| :-- | :-- |
+| **多模态材料接入** | 导入转写文本、DOCX、PPT/PPTX 与 PDF；保留人工核对汇报人与材料归属的步骤。 |
+| **科研图表理解** | 将 PPT/PDF 页面图像连同文字一起交给多模态模型，优先选择包含图表、实验与模型信息的页面。 |
+| **结构化组会纪要** | 按汇报人和主题生成讨论要点、导师反馈、风险提示与后续行动项。 |
+| **页面级证据溯源** | 使用结构化页码定位来源；在原始 PPT/PDF 页面中以黄色高亮或边框标出命中区域。 |
+| **真实文件预览** | PPT 通过 LibreOffice 渲染，PDF 直接按页成像；支持缩略图、整页大图和原文件查看。 |
+| **研究行动闭环** | 保存负责人、期限、优先级、状态与回应，并在资料库中查看历史记录和未完成事项。 |
+| **一键官方案例** | 内置“猪周期”研究组会材料，不准备任何文件也能体验完整链路。 |
 
-1. 在 `ran-backend/.env` 中配置模型服务，参考 `ran-backend/.env.example`。
-2. 在 Finder 双击 [启动研行记.command](启动研行记.command)。
-3. 首次运行会自动建立 Python 环境并安装依赖；浏览器随后自动打开主页。
-4. 点击“立即试用”，载入内置案例后即可生成完整组会纪要。
+## 本地运行
 
-> 启动终端保持打开；关闭该终端即停止本地服务。
+### macOS 一键启动
+
+1. 复制配置模板：`cp ran-backend/.env.example ran-backend/.env`。
+2. 在 `ran-backend/.env` 填写自己的模型服务密钥。
+3. 在 Finder 中双击 [启动研行记.command](启动研行记.command)。
+4. 首次启动会自动创建 Python 环境并安装依赖，随后打开 Demo 页面。
+
+保持启动终端开启；关闭终端即停止本地服务。
 
 ### 手动启动
 
@@ -80,56 +87,70 @@ python3 -m venv .venv
 ./.venv/bin/python -m uvicorn main:app --host 127.0.0.1 --port 8003
 ```
 
-在另一个终端运行：
+浏览器访问 `http://127.0.0.1:8003/app/demo.html`。前后端由同一个 FastAPI 服务提供，不需要再启动单独的静态服务器。
 
-```bash
-cd "ran-page 3"
-python3 -m http.server 8081
-```
+## 模型配置
 
-访问 `http://127.0.0.1:8081`。
-
-## Model configuration
-
-复制并填写 `ran-backend/.env`：
+项目支持 OpenAI 兼容接口。当前示例使用 OpenRouter 上的 `deepseek/deepseek-v4.1-flash`：
 
 ```dotenv
-OPENAI_API_KEY=your_key
-OPENAI_BASE_URL=https://api.openai.com/v1
-OPENAI_MODEL=gpt-4o
+OPENAI_API_KEY=your_openrouter_key
+OPENAI_BASE_URL=https://openrouter.ai/api/v1
+OPENAI_MODEL=deepseek/deepseek-v4.1-flash
+VISION_INPUT_ENABLED=true
+VISION_MAX_IMAGES=18
 ```
 
-支持 OpenAI 兼容接口。模型选择建议见 [模型推荐.md](ran-backend/模型推荐.md)。
+如使用其他服务商，请同时替换 `OPENAI_BASE_URL`、`OPENAI_MODEL` 和对应 Key。模型选型说明见 [模型推荐.md](ran-backend/模型推荐.md)。
 
-## Repository map
+## 部署公开体验版
+
+仓库根目录的 [Dockerfile](Dockerfile) 可直接部署到 Render 等容器平台。线上服务需要在平台控制台添加以下环境变量：
+
+| 变量 | 示例 | 说明 |
+| :-- | :-- | :-- |
+| `OPENAI_API_KEY` | 在平台 Secret 中填写 | 必填；只保存在服务端，绝不要写进仓库。 |
+| `OPENAI_BASE_URL` | `https://openrouter.ai/api/v1` | OpenAI 兼容接口地址。 |
+| `OPENAI_MODEL` | `deepseek/deepseek-v4.1-flash` | 当前使用的多模态模型。 |
+| `VISION_INPUT_ENABLED` | `true` | 是否向模型发送页面图像。 |
+| `VISION_MAX_IMAGES` | `18` | 单次生成最多送入模型的视觉页数。 |
+
+部署后的 `/health` 会返回 `model_configured: true/false`，便于确认服务端是否读到密钥，但不会返回密钥本身。
+
+真实 API Key 只应出现在本机 `ran-backend/.env` 或部署平台的 Secret/Environment 面板中。本仓库通过 `.gitignore` 与 `.dockerignore` 双重排除 `.env`；前端代码、Git 历史和浏览器网络响应都不包含密钥。公开演示会消耗维护者的模型额度，建议同时在模型服务商后台设置消费上限与告警。
+
+## 项目结构
 
 ```text
 lab-meeting-copilot/
 ├── ran-page 3/             # 产品主页与交互式 Demo
 ├── ran-backend/
-│   ├── main.py             # FastAPI、材料解析、LLM 编排、资料库接口
-│   ├── trial_assets/       # 内置演示素材
+│   ├── main.py             # FastAPI、材料解析、模型编排、溯源与资料库接口
+│   ├── trial_assets/       # 内置官方演示素材
 │   ├── requirements.txt    # Python 依赖
-│   └── .env.example        # 模型配置模板
-├── 测试材料_三人组会/        # 可手动上传的测试包
+│   └── .env.example        # 不含真实密钥的配置模板
+├── 测试材料_三人组会/        # 可手动上传的本地测试包
+├── Dockerfile              # 公网容器部署
 └── 启动研行记.command       # macOS 一键启动入口
 ```
 
-## Privacy & boundaries
+## 隐私与边界
 
-- API Key 只从本地 `.env` 读取，已被 Git 忽略，不会提交到仓库。
-- 组会生成记录与用户上传材料默认保存在本机资料库，已被 Git 忽略。
-- 生成结果用于辅助梳理和推进研究，不应替代研究者对实验、数据、引用与结论的最终判断。
-- 演示材料仅用于产品体验；使用自己的数据时，请确保拥有相应的处理和分享权限。
+- API Key 仅由后端读取；`.env`、生成记录数据库与上传文件均已从 Git/Docker 构建上下文排除。
+- 当前公开版是产品演示，不是带账号隔离的多用户系统；请勿在公开站点处理敏感材料。
+- AI 结果用于辅助梳理和推进研究，不能替代研究者对实验、数据、引用和结论的最终核验。
+- 内置案例仅用于产品体验；处理自有材料前，请确认拥有相应的使用与分享权限。
 
-## Roadmap
+## 下一步
 
 - [x] 多来源材料解析与结构化纪要
+- [x] PPT/PDF 真页预览与页面级黄色溯源
+- [x] 多模态图表理解与视觉页面优先选择
 - [x] 行动项闭环与本地资料库
-- [x] 内置一键演示案例
-- [ ] 更细粒度的引文定位与证据编辑
-- [ ] 团队协作与权限管理
-- [ ] 可部署的多用户版本
+- [x] 一键官方演示案例与公开体验站点
+- [ ] 团队账号、权限与数据隔离
+- [ ] 可编辑的细粒度证据框与人工校正
+- [ ] 跨项目研究记忆与协作工作流
 
 ## License
 
